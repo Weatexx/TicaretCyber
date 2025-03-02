@@ -15,9 +15,9 @@ if (!isset($_SESSION['loggedin'])) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Admin Paneli | Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.min.css">
+
     <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <!--end::Head-->
   <!--begin::Body-->
@@ -61,21 +61,27 @@ if (!isset($_SESSION['loggedin'])) {
           <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
               <li class="nav-item">
-                <a href="index.php" class="nav-link active">
+                <a href="#" class="nav-link" onclick="loadContent('dashboard')">
                   <i class="nav-icon bi bi-speedometer"></i>
                   <p>Dashboard</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="edit_instructors.php" class="nav-link">
+                <a href="#" class="nav-link" onclick="loadContent('instructors')">
                   <i class="nav-icon bi bi-person"></i>
-                  <p>Eğitmenleri Düzenle</p>
+                  <p>Eğitmenler</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="edit_trainings.php" class="nav-link">
+                <a href="#" class="nav-link" onclick="loadContent('trainings')">
                   <i class="nav-icon bi bi-book"></i>
-                  <p>Eğitimleri Düzenle</p>
+                  <p>Eğitimler</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link" onclick="loadContent('about')">
+                  <i class="nav-icon bi bi-info-circle"></i>
+                  <p>Hakkımızda</p>
                 </a>
               </li>
             </ul>
@@ -99,31 +105,9 @@ if (!isset($_SESSION['loggedin'])) {
           </div>
         </div>
         <div class="app-content">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-lg-3 col-6">
-                <div class="small-box text-bg-primary">
-                  <div class="inner">
-                    <h3>150</h3>
-                    <p>Yeni Siparişler</p>
-                  </div>
-                  <div class="icon">
-                    <i class="bi bi-cart"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="small-box text-bg-success">
-                  <div class="inner">
-                    <h3>53</h3>
-                    <p>Yeni Kullanıcılar</p>
-                  </div>
-                  <div class="icon">
-                    <i class="bi bi-person-plus"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="container-fluid" id="content-area">
+            <!-- Burada içerik yüklenecek -->
+            <h4 class="text-center">Lütfen sol menüden bir seçenek seçin.</h4>
           </div>
         </div>
       </main>
@@ -137,6 +121,22 @@ if (!isset($_SESSION['loggedin'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+
+    <script>
+      function loadContent(page) {
+        $.ajax({
+          url: 'instructors.php', // İlgili sayfanın yolu
+          method: 'GET',
+          success: function(data) {
+            $('#content-area').html(data); // İçeriği güncelle
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Hata: " + textStatus + " - " + errorThrown);
+            $('#content-area').html('<h4 class="text-center text-danger">İçerik yüklenemedi.</h4>');
+          }
+        });
+      }
+    </script>
   </body>
   <!--end::Body-->
 </html> 

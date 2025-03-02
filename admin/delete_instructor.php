@@ -1,19 +1,15 @@
 <?php
-session_start();
 include '../db.php'; // Veritabanı bağlantısını dahil et
 
-// Basit bir oturum kontrolü
-if (!isset($_SESSION['loggedin'])) {
-    header('Location: login.php');
-    exit;
-}
+$id = $_POST['id'];
+$query = "DELETE FROM instructors WHERE id = $id"; // Eğitmeni sil
+$result = mysqli_query($conn, $query);
 
-// Eğitmeni sil
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $query = "DELETE FROM instructors WHERE id = $id";
-    mysqli_query($conn, $query);
-    header('Location: edit_instructors.php');
-    exit;
+if ($result) {
+    echo "<h4 class='text-center text-success'>Eğitmen başarıyla silindi.</h4>";
+    // Eğitmenler listesini tekrar yükle
+    include 'instructors.php';
+} else {
+    echo "<h4 class='text-center text-danger'>Silme işlemi başarısız: " . mysqli_error($conn) . "</h4>";
 }
 ?> 

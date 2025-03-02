@@ -2,30 +2,6 @@
 session_start();
 include '../db.php'; // Veritabanı bağlantısını dahil et
 
-// Şifreleme anahtarınızı belirleyin
-$key = 'your_secret_key'; // Bu anahtarı güvenli bir yerde saklayın
-
-function encrypt($data, $key) {
-    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
-    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
-    return base64_encode($encrypted . '::' . $iv);
-}
-
-function decrypt($data, $key) {
-    $decoded = base64_decode($data);
-    if ($decoded === false) {
-        return false; // Eğer base64_decode başarısız olursa false döndür
-    }
-    
-    $parts = explode('::', $decoded, 2);
-    if (count($parts) !== 2) {
-        return false; // Eğer iki parça yoksa false döndür
-    }
-    
-    list($encrypted_data, $iv) = $parts;
-    return openssl_decrypt($encrypted_data, 'aes-256-cbc', $key, 0, $iv);
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -42,8 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result && mysqli_num_rows($result) == 1) {
         $admin = mysqli_fetch_assoc($result);
         // Şifreyi kontrol et
-        $decryptedPassword = decrypt($admin['password'], $key);
-        if ($decryptedPassword !== false && $password === $decryptedPassword) {
+        if ($password === $admin['password']) { // Şifre kontrolü
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $username;
             header('Location: index.php'); // Giriş başarılıysa admin paneline yönlendir

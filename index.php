@@ -4,6 +4,11 @@ if (strpos($_SERVER['REQUEST_URI'], '/admin') !== false) {
     header('Location: login.php');
     exit;
 }
+
+include 'db.php'; // Veritabanı bağlantısını dahil et
+
+$query = "SELECT * FROM instructors"; // Eğitmenler tablosundan tüm verileri çek
+$result = mysqli_query($conn, $query);
 ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -11,6 +16,8 @@ if (strpos($_SERVER['REQUEST_URI'], '/admin') !== false) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siber Güvenlik Eğitimleri</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="AdminLTE/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="root/css/bootstrap.css">
     <link rel="stylesheet" href="root/css/style.css">
 </head>
@@ -105,36 +112,13 @@ if (strpos($_SERVER['REQUEST_URI'], '/admin') !== false) {
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 text-center">
-                    <img src="root/img/egitmen1.jpg" class="img-fluid rounded-circle" alt="Eğitmen 1" style="width: 150px; height: 150px;">
-                    <h3 style="color: white;">Eğitmen 1</h3>
-                    <p style="color: rgba(255,255,255,0.61);">Uzmanlık Alanı: Siber Güvenlik</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="root/img/egitmen2.jpg" class="img-fluid rounded-circle" alt="Eğitmen 2" style="width: 150px; height: 150px;">
-                    <h3 style="color: white;">Eğitmen 2</h3>
-                    <p style="color: rgba(255,255,255,0.61);">Uzmanlık Alanı: Ağ Güvenliği</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="root/img/egitmen3.jpg" class="img-fluid rounded-circle" alt="Eğitmen 3" style="width: 150px; height: 150px;">
-                    <h3 style="color: white;">Eğitmen 3</h3>
-                    <p style="color: rgba(255,255,255,0.61);">Uzmanlık Alanı: Kriptografi</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="root/img/egitmen4.jpg" class="img-fluid rounded-circle" alt="Eğitmen 4" style="width: 150px; height: 150px;">
-                    <h3 style="color: white;">Eğitmen 4</h3>
-                    <p style="color: rgba(255,255,255,0.61);">Uzmanlık Alanı: Veri Güvenliği</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="root/img/egitmen5.jpg" class="img-fluid rounded-circle" alt="Eğitmen 5" style="width: 150px; height: 150px;">
-                    <h3 style="color: white;">Eğitmen 5</h3>
-                    <p style="color: rgba(255,255,255,0.61);">Uzmanlık Alanı: Etik Hacking</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="root/img/egitmen6.jpg" class="img-fluid rounded-circle" alt="Eğitmen 6" style="width: 150px; height: 150px;">
-                    <h3 style="color: white;">Eğitmen 6</h3>
-                    <p style="color: rgba(255,255,255,0.61);">Uzmanlık Alanı: Siber Tehdit Analizi</p>
-                </div>
+                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                    <div class="col-md-4 text-center">
+                        <img src="<?php echo $row['photo']; ?>" class="img-fluid rounded-circle" alt="Eğitmen <?php echo $row['name']; ?>" style="width: 150px; height: 150px;">
+                        <h3 style="color: white;"><?php echo $row['name']; ?></h3>
+                        <p style="color: rgba(255,255,255,0.61);">Uzmanlık Alanı: <?php echo $row['expertise']; ?></p>
+                    </div>
+                <?php } ?>
             </div>
         </section>
 
@@ -205,4 +189,4 @@ if (strpos($_SERVER['REQUEST_URI'], '/admin') !== false) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>
