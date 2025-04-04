@@ -3,6 +3,7 @@ include '../db.php'; // Veritabanı bağlantısını dahil et
 
 $name = $_POST['name'];
 $expertise = $_POST['expertise'];
+$profile_url = $_POST['profile_url'];
 
 // Fotoğraf yükleme işlemi
 $targetDir = "uploads/"; // Yükleme dizini
@@ -45,7 +46,7 @@ if ($uploadOk == 0) {
 } else {
     if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
         // Eğitmeni veritabanına ekle
-        $query = "INSERT INTO instructors (name, expertise, photo) VALUES ('$name', '$expertise', '$targetFile')";
+        $query = "INSERT INTO instructors (name, expertise, profile_url, photo) VALUES ('$name', '$expertise', '$profile_url', '$targetFile')";
         $result = mysqli_query($conn, $query);
 
         if ($result) {

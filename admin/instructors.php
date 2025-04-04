@@ -13,13 +13,14 @@ if (mysqli_num_rows($result) > 0) {
     echo "<h4>Eğitmenler Listesi</h4>";
     echo "<button class='btn btn-success mb-3' onclick='showAddInstructorForm()'>Eğitmen Ekle</button>"; // Eğitmen Ekle butonu
     echo "<table class='table table-bordered'>";
-    echo "<thead><tr><th>ID</th><th>İsim</th><th>Uzmanlık</th><th>Fotoğraf</th><th>İşlemler</th></tr></thead>";
+    echo "<thead><tr><th>ID</th><th>İsim</th><th>Uzmanlık</th><th>Profil URL</th><th>Fotoğraf</th><th>İşlemler</th></tr></thead>";
     echo "<tbody>";
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
         echo "<td>" . $row['id'] . "</td>";
         echo "<td>" . htmlspecialchars($row['name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['expertise']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['profile_url'] ?? '#') . "</td>";
         echo "<td><img src='" . htmlspecialchars($row['photo']) . "' alt='Eğitmen Fotoğrafı' style='width: 50px; height: auto;'></td>";
         echo "<td>
                 <button class='btn btn-warning btn-sm' onclick='editInstructor(" . $row['id'] . ")'>Düzenle</button>
@@ -76,6 +77,11 @@ function showAddInstructorForm() {
             <div class="mb-3">
                 <label for="expertise" class="form-label">Uzmanlık</label>
                 <input type="text" class="form-control" id="expertise" name="expertise" required>
+            </div>
+            <div class="mb-3">
+                <label for="profile_url" class="form-label">Profil URL'si</label>
+                <input type="url" class="form-control" id="profile_url" name="profile_url" placeholder="https://example.com/profile">
+                <small class="form-text text-muted">"Profili Görüntüle" butonuna tıklandığında açılacak URL'yi girin.</small>
             </div>
             <div class="mb-3">
                 <label for="photo" class="form-label">Fotoğraf Yükle</label>

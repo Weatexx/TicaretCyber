@@ -2,6 +2,12 @@
 session_start();
 include '../db.php'; // Veritabanı bağlantısını dahil et
 
+// Oturum açılmışsa, doğrudan dashboard.php'ye yönlendir
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    header('Location: dashboard.php');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -21,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($password === $admin['password']) { // Şifre kontrolü
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $username;
-            header('Location: index.php'); // Giriş başarılıysa admin paneline yönlendir
+            header('Location: dashboard.php'); // Giriş başarılıysa admin paneline yönlendir
             exit;
         } else {
             $error = "Kullanıcı adı veya şifre hatalı.";
@@ -45,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Admin</b> Paneli</a>
+        <a href="#"><b>Admin</b> Panel</a>
     </div>
     <div class="card">
         <div class="card-body login-card-body">
