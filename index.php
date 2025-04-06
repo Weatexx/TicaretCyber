@@ -27,7 +27,7 @@ $contactUrl = $apply['contact_url'] ?? '#';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siber Güvenlik Eğitimleri</title>
+    <title>İstanbul Ticaret Üniversitesi Siber Güvenlik Topluluğu</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="AdminLTE/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="root/css/bootstrap.css">
@@ -41,7 +41,7 @@ $contactUrl = $apply['contact_url'] ?? '#';
     }
 
     /* Bize Ulaşın butonu için de benzer bir hover efekti ekleyelim */
-    .navbar-nav .nav-item button.nav-link:hover {
+    .navbar-nav .nav-item button.nav-link:hover, .contact-button:hover {
         color: #FDC400 !important; /* Sarı renk vurgusu */
         text-shadow: 0 0 8px rgba(253, 196, 0, 0.5); /* Hafif parıltı efekti */
     }
@@ -54,6 +54,173 @@ $contactUrl = $apply['contact_url'] ?? '#';
         color: #ff9500 !important;
         text-decoration: none;
     }
+
+    /* Sayfa içi hedefler için css ekliyorum */
+    html {
+        scroll-behavior: auto;
+    }
+
+    section[id] {
+        scroll-margin-top: 80px; /* NavBar yüksekliğine göre ayarlanmalıdır */
+    }
+    
+    /* Responsive Tasarım İçin Media Sorguları */
+    
+    /* Genel responsive ayarlar */
+    body {
+        overflow-x: hidden;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Mobil cihazlar için (576px'e kadar) */
+    @media (max-width: 576px) {
+        .navbar img.text-center {
+            width: 8% !important;
+        }
+        
+        .navbar .nav-link {
+            text-align: center;
+            margin: 5px 0;
+        }
+        
+        .navbar .ms-auto {
+            margin: 10px auto !important;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem !important;
+            text-align: center;
+        }
+        
+        .hero p {
+            text-align: center;
+        }
+        
+        .hero-container {
+            padding-top: 60px;
+        }
+        
+        .hero button.apply-button {
+            margin: 15px auto !important;
+            display: block !important;
+        }
+        
+        section h1.text-center {
+            font-size: 2.5rem !important;
+        }
+        
+        .bizkimiz h1:nth-child(2), .bizkimiz h1:nth-child(3) {
+            font-size: 2rem !important;
+        }
+        
+        footer .container {
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+        }
+    }
+    
+    /* Tabletler için (768px'e kadar) */
+    @media (max-width: 768px) {
+        .navbar img.text-center {
+            width: 5% !important;
+        }
+        
+        .hero h1 {
+            font-size: 3rem !important;
+        }
+        
+        .bizkimiz h1.text-center {
+            font-size: 3rem !important;
+        }
+        
+        .bizkimiz h1:nth-child(2), .bizkimiz h1:nth-child(3) {
+            font-size: 2.5rem !important;
+        }
+        
+        .egitimlerimiz .aciklama br {
+            display: none; /* Mobil görünümde satır sonlarını kaldır */
+        }
+        
+        .card-body {
+            padding: 1.25rem !important;
+        }
+    }
+    
+    /* Orta boyutlu ekranlar için (992px'e kadar) */
+    @media (max-width: 992px) {
+        .navbar .navbar-collapse {
+            background-color: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .hero-container {
+            padding-top: 100px;
+        }
+        
+        .navbar-nav {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .navbar .nav-item.ms-auto {
+            margin-left: 0 !important;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .navbar-toggler {
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        .contact-button {
+            display: inline-block;
+            margin: 0 auto;
+        }
+    }
+
+    /* Hamburger menü ikonu için basit stil düzeltmesi */
+    .navbar-toggler {
+        border: none;
+        padding: 0.25rem;
+    }
+    
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+    
+    /* Hamburger menü ikonunun rengini değiştir */
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+    
+    /* Bize Ulaşın butonu için özel stil ekleyelim */
+    .contact-button {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.75);
+        font-size: .9rem;
+        cursor: pointer;
+        padding: 8px;
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
     </style>
 </head>
 <body>
@@ -64,14 +231,14 @@ $contactUrl = $apply['contact_url'] ?? '#';
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <img src="root/img/ticaret.png" class="text-center m-auto mx-2" style="width: 2%" alt="Ticaret Logo">
-            <span class="nav-link" style="color: rgba(255,255,255,0.75); font-size: .9rem">Ticaret Cyber &nbsp |</span>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+            <span class="nav-link d-none d-sm-inline" style="color: rgba(255,255,255,0.75); font-size: .9rem">Ticaret Cyber &nbsp |</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu" aria-controls="navmenu" aria-expanded="false" aria-label="Menüyü aç/kapat">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navmenu">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav text-center">
                     <li class="nav-item">
-                        <a href="#anasayfa" class="nav-link" style="color: rgba(255,255,255,0.75); font-size: .9rem">Anasayfa</a>
+                        <a href="#hero-section" class="nav-link" style="color: rgba(255,255,255,0.75); font-size: .9rem">Anasayfa</a>
                     </li>
                     <li class="nav-item">
                         <a href="#bizkimiz" class="nav-link" style="color: rgba(255,255,255,0.75); font-size: .9rem">Hakkımızda</a>
@@ -82,13 +249,13 @@ $contactUrl = $apply['contact_url'] ?? '#';
                     <li class="nav-item">
                         <a href="#egitimlerimiz" class="nav-link" style="color: rgba(255,255,255,0.75); font-size: .9rem">Eğitimler</a>
                     </li>
-                    <li class="nav-item">
-                        <button onclick="window.open('<?php echo htmlspecialchars($contactUrl); ?>', '_blank')" class="nav-link" style="background: none; border: none; color: rgba(255,255,255,0.75); font-size: .9rem; cursor: pointer;">Bize Ulaşın</button>
+                    <li class="nav-item text-center">
+                        <button onclick="window.open('<?php echo htmlspecialchars($contactUrl); ?>', '_blank')" class="contact-button">Bize Ulaşın</button>
                     </li>
                 </ul>
-                <li class="nav-item ms-auto">
+                <div class="ms-auto d-flex justify-content-center justify-content-lg-end">
                     <button onclick="window.open('<?php echo htmlspecialchars($applyUrl); ?>', '_blank')" class="btn apply-button" style="background-color: #FDC400; border: none; border-radius: 50px; width: 120px; height: 35px; transition: all 0.3s ease;">Başvuru Yap</button>
-                </li>
+                </div>
             </div>
         </div>
     </nav>
@@ -105,13 +272,13 @@ $contactUrl = $apply['contact_url'] ?? '#';
             <div class="light-beam-right"></div>
         </div>
         
-        <section class="hero">
-            <div class="row">
-                <div class="col-md-6 col-sm-12 text-light">
+        <section class="hero" id="hero-section">
+            <div class="row gy-4">
+                <div class="col-md-6 col-sm-12 text-light d-flex flex-column align-items-center align-items-md-start">
                     <p style="color: rgba(255,255,255,0.61)">İ s t a n b u l &nbsp T i c a r e t &nbsp Ü n i v e r s i t e s i</p>
-                    <h1 style="color: white; font-size: 4rem">Siber Güvenlik <br> Eğitimleri</h1>
-                    <p style="color: rgba(255,255,255,0.61)">Temel amacımız siber güvenlik alanında eğitimler, <br> seminerler ve tanıtım içerikleri üreterek bu alana ilgisi olan kişileri
-                        <br> geliştirmektir.</p>
+                    <h1 style="color: white; font-size: 4rem">IoT Zirvesi <br>ve Eğitimleri</h1>
+                    <p style="color: rgba(255,255,255,0.61)">Temel amacımız siber güvenlik alanında eğitimler, <br class="d-none d-md-inline"> seminerler ve tanıtım içerikleri üreterek bu alana ilgisi olan kişileri
+                        <br class="d-none d-md-inline"> geliştirmektir.</p>
                     <button onclick="window.open('<?php echo htmlspecialchars($applyUrl); ?>', '_blank')" class="mt-3 mb-5 apply-button" style="background-color: #FDC400; border: none; border-radius: 50px; width: 120px; height: 35px; display: inline-block; text-align: center; line-height: 35px; text-decoration: none; color: #333; cursor: pointer; transition: all 0.3s ease;">Başvuru Yap</button>
                 </div>
                 <div class="text-center col-md-6 col-sm-12">
@@ -132,6 +299,33 @@ $contactUrl = $apply['contact_url'] ?? '#';
                 background: linear-gradient(90deg, #ffffff, #000000);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($about['title']); ?></h1>
+                
+                <?php if (isset($about['subtitle']) && $about['subtitle'] !== '') { 
+                    // Alt başlığı tamamen veritabanından yönetmek için
+                    // Eğer tire işaretiyle ayrılmış ise iki parçaya böl
+                    if (strpos($about['subtitle'], ' - ') !== false) {
+                        $subtitleParts = explode(' - ', $about['subtitle']);
+                        $part1 = $subtitleParts[0];
+                        $part2 = $subtitleParts[1];
+                ?>
+                <h1 class="text-center" style="
+                font-size: 3rem;
+                background: linear-gradient(90deg, #ffdd03, #ff6c03);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($part1); ?></h1>
+                <h1 class="text-center" style="
+                font-size: 3rem;
+                background: linear-gradient(90deg, #ffdd03, #d54000);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($part2); ?></h1>
+                <?php } else { // Tire işareti yoksa tek satır göster ?>
+                <h1 class="text-center" style="
+                font-size: 3rem;
+                background: linear-gradient(90deg, #ffdd03, #d54000);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($about['subtitle']); ?></h1>
+                <?php } 
+                } else { // Subtitle boşsa varsayılan değerleri göster ?>
                 <h1 class="text-center" style="
                 font-size: 3rem;
                 background: linear-gradient(90deg, #ffdd03, #ff6c03);
@@ -142,7 +336,8 @@ $contactUrl = $apply['contact_url'] ?? '#';
                 background: linear-gradient(90deg, #ffdd03, #d54000);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;">Siber Güvenlik Topluluğu</h1>
-                <p class="text-center" style="flex-wrap: nowrap; color: rgba(255,255,255,0.61) ">
+                <?php } ?>
+                <p class="text-center px-3" style="color: rgba(255,255,255,0.61) ">
                     <?php echo nl2br(htmlspecialchars($about['content'])); ?>
                 </p>
             </div>
@@ -229,9 +424,9 @@ $contactUrl = $apply['contact_url'] ?? '#';
                 background: linear-gradient(90deg, #ffffff, #000000);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;">Eğitimlerimiz</h1>
-                <p class="aciklama" style="flex-wrap: nowrap; text-align: center; color: rgba(255,255,255,0.61) ">
-                    Siber güvenlik eğitimlerimiz, temel bilgilerden ileri seviye tekniklere kadar geniş bir <br> yelpazede, bireyleri ve kurumları dijital tehditlere karşı koruma becerileriyle donatmayı
-                    <br> amaçlamaktadır.
+                <p class="aciklama" style="text-align: center; color: rgba(255,255,255,0.61); padding: 0 15px;">
+                    Siber güvenlik eğitimlerimiz, temel bilgilerden ileri seviye tekniklere kadar geniş bir <br class="d-none d-md-inline"> yelpazede, bireyleri ve kurumları dijital tehditlere karşı koruma becerileriyle donatmayı
+                    <br class="d-none d-md-inline"> amaçlamaktadır.
                 </p>
             </div>
         </div>
@@ -305,11 +500,11 @@ $contactUrl = $apply['contact_url'] ?? '#';
 
 <!-- Footer -->
 <footer>
-    <div class="container d-flex justify-content-between align-items-center">
-        <div>
+    <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center">
+        <div class="text-center text-sm-start mb-3 mb-sm-0">
             İstanbul Ticaret Üniversitesi Siber Güvenlik Topluluğu
         </div>
-        <div>
+        <div class="text-center text-sm-end">
             Made by <a href="https://www.linkedin.com/in/arda-koray-kartal-22334626a/" class="text-decoration-none" style="color: #FDC400;">Arda Koray Kartal</a>
         </div>
     </div>
@@ -320,106 +515,32 @@ $contactUrl = $apply['contact_url'] ?? '#';
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 $(document).ready(function() {
-    var isScrolling = false;
-    var navOffset = 90;
-    
-    // Tüm navbar linklerini seç
-    $('.navbar-nav .nav-link').on('click', function(e) {
-        e.preventDefault(); // Önce tüm varsayılan davranışları engelle
-        
-        // Eğer zaten kaydırma işlemi devam ediyorsa, işlemi iptal et
-        if (isScrolling) {
-            return false;
-        }
-
-        var targetId = $(this).attr('href');
-        
-        // Eğer hedef ID yoksa veya # karakteri içermiyorsa işlemi sonlandır
-        if (!targetId || !targetId.includes('#')) {
-            return true;
-        }
-
-        isScrolling = true;
-        
-        // Önce mevcut tüm animasyonları durdur
-        $('html, body').stop(true, true);
-        
-        if (targetId === '#anasayfa') {
-            $('html, body').animate({
-                scrollTop: 0
-            }, {
-                duration: 500,
-                complete: function() {
-                    isScrolling = false;
-                    history.pushState(null, null, targetId);
-                }
-            });
-        } else {
-            var target = $(targetId);
-            if (target.length) {
-                $('html, body').animate({
-                    scrollTop: target.offset().top - navOffset
-                }, {
-                    duration: 500,
-                    complete: function() {
-                        isScrolling = false;
-                        history.pushState(null, null, targetId);
-                    }
-                });
-            } else {
-                isScrolling = false;
-            }
-        }
-    });
-
     // Navbar arka plan efekti
-    function updateNavbarBackground() {
-        if ($(window).scrollTop() > 50) {
+    function updateNavbar() {
+        if($(window).scrollTop() > 50) {
             $('.navbar').css({
                 'background': 'rgba(17, 17, 17, 0.85)',
                 'backdrop-filter': 'blur(10px)',
-                '-webkit-backdrop-filter': 'blur(10px)',
-                'box-shadow': '0 4px 20px rgba(0,0,0,0.2)',
-                'border-bottom': '1px solid rgba(255,255,255,0.05)'
+                'box-shadow': '0 4px 20px rgba(0,0,0,0.2)'
             });
         } else {
             $('.navbar').css({
                 'background': 'rgba(17, 17, 17, 0.5)',
                 'backdrop-filter': 'blur(5px)',
-                '-webkit-backdrop-filter': 'blur(5px)',
-                'box-shadow': 'none',
-                'border-bottom': 'none'
+                'box-shadow': 'none'
             });
         }
     }
-
-    $(window).on('scroll', updateNavbarBackground);
-    updateNavbarBackground();
-
-    // Sayfa yüklendiğinde hash varsa
-    if (window.location.hash) {
-        setTimeout(function() {
-            window.scrollTo(0, 0);
-            var hash = window.location.hash;
-            
-            if (hash !== '#anasayfa') {
-                var target = $(hash);
-                if (target.length) {
-                    setTimeout(function() {
-                        $('html, body').animate({
-                            scrollTop: target.offset().top - navOffset
-                        }, 500);
-                    }, 200);
-                }
-            }
-        }, 1);
-    }
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('a[href="<?php echo htmlspecialchars($contactUrl); ?>"]').addEventListener('click', function(e) {
-        console.log('Bize Ulaşın bağlantısı tıklandı, hedef URL: <?php echo htmlspecialchars($contactUrl); ?>');
+    
+    // İlk yükleme ve scroll
+    updateNavbar();
+    $(window).on('scroll', updateNavbar);
+    
+    // Mobil menü kapatma
+    $('.navbar-nav .nav-link').on('click', function() {
+        if ($('.navbar-collapse').hasClass('show')) {
+            $('.navbar-toggler').click();
+        }
     });
 });
 </script>

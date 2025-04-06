@@ -47,6 +47,92 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
+    <style>
+        /* Responsive düzenlemeler */
+        body {
+            background: #f4f6f9;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 15px;
+        }
+        
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .login-logo {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .login-logo a {
+            font-size: 2rem;
+            text-decoration: none;
+            color: #343a40;
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border: none;
+            overflow: hidden;
+        }
+        
+        .login-card-body {
+            padding: 30px;
+        }
+        
+        .login-box-msg {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #3d3d3d;
+            text-align: center;
+        }
+        
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-weight: 500;
+            padding: 10px 0;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .text-danger {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        @media (max-width: 576px) {
+            .login-box {
+                max-width: 100%;
+            }
+            
+            .login-logo a {
+                font-size: 1.7rem;
+            }
+            
+            .login-card-body {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -60,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="input-group mb-3">
                     <input type="text" name="username" class="form-control" placeholder="Kullanıcı Adı" required>
                     <div class="input-group-append">
-                        <div class="input-group-text">
+                        <div class="input-group-text">                         
                             <span class="fas fa-user"></span>
                         </div>
                     </div>

@@ -16,27 +16,199 @@ if (!isset($_SESSION['loggedin'])) {
     <title>Admin Paneli | Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* Responsive düzenlemeler */
+      @media (max-width: 768px) {
+        .app-sidebar {
+          width: 100%;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+          position: fixed;
+          z-index: 1000;
+          box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        
+        .sidebar-open .app-sidebar {
+          transform: translateX(0);
+        }
+        
+        .app-main {
+          margin-left: 0 !important;
+          width: 100% !important;
+        }
+        
+        .app-header {
+          width: 100% !important;
+          left: 0 !important;
+        }
+        
+        .sidebar-open .app-main,
+        .sidebar-open .app-header {
+          margin-left: 0 !important;
+        }
+        
+        .app-content-header h3 {
+          font-size: 1.5rem;
+        }
+        
+        .nav-sidebar .nav-link {
+          padding: 0.75rem;
+        }
+        
+        .app-footer {
+          text-align: center;
+        }
+        
+        .app-footer .float-end {
+          float: none !important;
+          display: block;
+          margin-top: 10px;
+        }
+      }
+      
+      @media (max-width: 576px) {
+        .app-content-header h3 {
+          font-size: 1.25rem;
+        }
+        
+        .table-responsive {
+          font-size: 0.9rem;
+        }
+      }
+      
+      /* Genel düzenlemeler */
+      .app-sidebar {
+        width: 250px;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-color: #343a40;
+        color: white;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        padding-top: 60px;
+      }
+      
+      .app-main {
+        margin-left: 250px;
+        transition: margin-left 0.3s ease;
+        min-height: calc(100vh - 56px);
+        padding-top: 60px;
+      }
+      
+      .app-header {
+        position: fixed;
+        top: 0;
+        left: 250px;
+        right: 0;
+        z-index: 999;
+        height: 56px;
+        background-color: #fff;
+        border-bottom: 1px solid #dee2e6;
+        transition: left 0.3s ease;
+      }
+      
+      .dropdown-menu {
+        border-radius: 0.25rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+      }
+      
+      .brand-link {
+        display: block;
+        padding: 15px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 300;
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+      
+      .brand-link img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      
+      .nav-sidebar {
+        padding: 0 15px;
+      }
+      
+      .nav-sidebar .nav-link {
+        color: rgba(255,255,255,0.7);
+        padding: 12px 15px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-size: 15px;
+      }
+      
+      .nav-sidebar .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      
+      .nav-sidebar .nav-link i {
+        margin-right: 10px;
+      }
+      
+      .app-main-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+      
+      .sidebar-open .app-main-overlay {
+        display: block;
+      }
+      
+      .app-content {
+        padding: 20px;
+      }
+      
+      .app-content-header {
+        padding: 15px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 20px;
+      }
+      
+      .app-footer {
+        padding: 15px 20px;
+        border-top: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <!--end::Head-->
   <!--begin::Body-->
-  <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+  <body>
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
       <!--begin::Header-->
-      <nav class="app-header navbar navbar-expand bg-body">
+      <nav class="app-header navbar navbar-expand">
         <div class="container-fluid">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+              <button id="sidebar-toggle" class="btn btn-link nav-link px-2">
                 <i class="bi bi-list"></i>
-              </a>
+              </button>
             </li>
           </ul>
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
-              <a class="nav-link" data-bs-toggle="dropdown" href="#">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle"></i> <?php echo $_SESSION['username']; ?>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
@@ -47,39 +219,42 @@ if (!isset($_SESSION['loggedin'])) {
         </div>
       </nav>
       <!--end::Header-->
+      
+      <!-- Overlay for mobile sidebar -->
+      <div class="app-main-overlay"></div>
+      
       <!--begin::Sidebar-->
-      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+      <aside class="app-sidebar">
         <div class="sidebar-brand">
           <a href="dashboard.php" class="brand-link">
-            <img src="../AdminLTE/dist/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
-            <span class="brand-text fw-light">Admin Paneli</span>
+            <span class="brand-text fw-light">Admin Panel</span>
           </a>
         </div>
         <div class="sidebar-wrapper">
           <nav class="mt-2">
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-sidebar flex-column">
               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="loadContent('instructors')">
-                  <i class="nav-icon bi bi-person"></i>
-                  <p>Eğitmenler</p>
+                <a href="#" class="nav-link menu-link" data-page="instructors">
+                  <i class="bi bi-person"></i>
+                  <span>Eğitmenler</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="loadContent('trainings')">
-                  <i class="nav-icon bi bi-book"></i>
-                  <p>Eğitimler</p>
+                <a href="#" class="nav-link menu-link" data-page="trainings">
+                  <i class="bi bi-book"></i>
+                  <span>Eğitimler</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="loadContent('about')">
-                  <i class="nav-icon bi bi-info-circle"></i>
-                  <p>Hakkımızda</p>
+                <a href="#" class="nav-link menu-link" data-page="about">
+                  <i class="bi bi-info-circle"></i>
+                  <span>Hakkımızda</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="loadContent('apply')">
-                  <i class="nav-icon bi bi-link"></i>
-                  <p>Buton Ayarları</p>
+                <a href="#" class="nav-link menu-link" data-page="apply">
+                  <i class="bi bi-link"></i>
+                  <span>Buton Ayarları</span>
                 </a>
               </li>
             </ul>
@@ -114,11 +289,11 @@ if (!isset($_SESSION['loggedin'])) {
       </footer>
     </div>
     <!--end::App Wrapper-->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-    <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
+      // İçerik yükleme fonksiyonu
       function loadContent(page) {
         let url = '';
         if (page === 'instructors') {
@@ -136,18 +311,74 @@ if (!isset($_SESSION['loggedin'])) {
             return;
         }
 
-        $.ajax({
-            url: url,
-            method: 'GET',
-            success: function(data) {
-                $('#content-area').html(data); // İçeriği güncelle
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Hata: " + textStatus + " - " + errorThrown);
-                $('#content-area').html('<h4 class="text-center text-danger">İçerik yüklenemedi.</h4>');
-            }
-        });
+        // Önce sidebar'ı kapat, sonra içerik yükle
+        if (window.innerWidth < 768) {
+            document.body.classList.remove('sidebar-open');
+        }
+
+        // İçerik yükleme işlemi
+        $('#content-area').html('<div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Yükleniyor...</span></div></div>');
+        
+        setTimeout(function() {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(data) {
+                    $('#content-area').html(data); // İçeriği güncelle
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Hata: " + textStatus + " - " + errorThrown);
+                    $('#content-area').html('<h4 class="text-center text-danger">İçerik yüklenemedi.</h4>');
+                }
+            });
+        }, 300); // 300ms gecikme
       }
+      
+      // Sayfa yüklendiğinde
+      document.addEventListener('DOMContentLoaded', function() {
+        // Sidebar toggle fonksiyonu
+        function toggleSidebar() {
+          document.body.classList.toggle('sidebar-open');
+        }
+        
+        // Sidebar toggle butonu
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleSidebar();
+          });
+        }
+        
+        // Tüm menü bağlantıları
+        const menuLinks = document.querySelectorAll('.menu-link');
+        menuLinks.forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const page = this.getAttribute('data-page');
+            if (page) {
+              loadContent(page);
+            }
+          });
+        });
+        
+        // Overlay'a tıklama
+        const overlay = document.querySelector('.app-main-overlay');
+        if (overlay) {
+          overlay.addEventListener('click', function() {
+            if (document.body.classList.contains('sidebar-open')) {
+              toggleSidebar();
+            }
+          });
+        }
+        
+        // Ekran boyutu değişikliği
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 768 && document.body.classList.contains('sidebar-open')) {
+            document.body.classList.remove('sidebar-open');
+          }
+        });
+      });
     </script>
   </body>
   <!--end::Body-->
