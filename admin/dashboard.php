@@ -257,6 +257,12 @@ if (!isset($_SESSION['loggedin'])) {
                   <span>Buton Ayarları</span>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link menu-link" data-page="hero">
+                  <i class="bi bi-image"></i>
+                  <span>Hero İçeriği</span>
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -306,6 +312,8 @@ if (!isset($_SESSION['loggedin'])) {
             url = 'about.php'; // Hakkımızda sayfası
         } else if (page === 'apply') {
             url = 'apply.php'; // Başvuru butonu sayfası
+        } else if (page === 'hero') {
+            url = 'hero.php'; // Hero içeriği sayfası
         } else {
             $('#content-area').html('<h4 class="text-center text-danger">Bu bölümde içerik yüklenemez.</h4>');
             return;

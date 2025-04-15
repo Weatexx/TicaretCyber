@@ -21,6 +21,23 @@ $result = mysqli_query($conn, $query);
 $apply = mysqli_fetch_assoc($result);
 $applyUrl = $apply['button_url'] ?? '#';
 $contactUrl = $apply['contact_url'] ?? '#';
+
+// Hero Section içeriğini veritabanından çek
+$query = "SELECT * FROM hero_content WHERE id = 1"; 
+$result = mysqli_query($conn, $query);
+
+// Eğer hero_content tablosu varsa verilerini çek, yoksa varsayılan değerleri kullan
+if ($result && mysqli_num_rows($result) > 0) {
+    $hero = mysqli_fetch_assoc($result);
+    $heroTopTitle = $hero['top_title'];
+    $heroMainTitle = $hero['main_title'];
+    $heroDescription = $hero['description'];
+} else {
+    // Varsayılan değerler
+    $heroTopTitle = 'İ s t a n b u l &nbsp T i c a r e t &nbsp Ü n i v e r s i t e s i';
+    $heroMainTitle = 'IoT Zirvesi <br>ve Eğitimleri';
+    $heroDescription = 'Temel amacımız siber güvenlik alanında eğitimler, <br class="d-none d-md-inline"> seminerler ve tanıtım içerikleri üreterek bu alana ilgisi olan kişileri <br class="d-none d-md-inline"> geliştirmektir.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -64,6 +81,85 @@ $contactUrl = $apply['contact_url'] ?? '#';
         scroll-margin-top: 80px; /* NavBar yüksekliğine göre ayarlanmalıdır */
     }
     
+    /* Genel responsive tasarım için - başlıklar ve yazılar */
+    .gradient-heading {
+        font-size: 4rem;
+        background: linear-gradient(90deg, #ffffff, #000000);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        margin-bottom: 1.5rem;
+    }
+    
+    .subtitle-gradient {
+        font-size: 3rem;
+        background: linear-gradient(90deg, #ffdd03, #ff6c03);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        margin-bottom: 1rem;
+    }
+    
+    .subtitle-gradient-2 {
+        font-size: 3rem;
+        background: linear-gradient(90deg, #ffdd03, #d54000);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Card tasarımları */
+    .instructor-card, .training-card {
+        background: rgba(0, 0, 0, 0.3); 
+        backdrop-filter: blur(10px); 
+        -webkit-backdrop-filter: blur(10px); 
+        border-radius: 25px; 
+        border: 1px solid rgba(255, 255, 255, 0.05); 
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .training-card {
+        cursor: pointer;
+    }
+    
+    /* Card içerikleri */
+    .card-image-container {
+        width: 90px; 
+        height: 90px; 
+        min-width: 90px;
+        border-radius: 50%; 
+        overflow: hidden;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+    }
+    
+    .card-title {
+        color: white; 
+        font-weight: 600; 
+        margin-bottom: 0; 
+        font-size: 1.4rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .card-text {
+        color: rgba(255,255,255,0.9); 
+        font-size: 1rem; 
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
     /* Responsive Tasarım İçin Media Sorguları */
     
     /* Genel responsive ayarlar */
@@ -98,6 +194,7 @@ $contactUrl = $apply['contact_url'] ?? '#';
         
         .hero p {
             text-align: center;
+            font-size: 0.9rem !important;
         }
         
         .hero-container {
@@ -109,18 +206,45 @@ $contactUrl = $apply['contact_url'] ?? '#';
             display: block !important;
         }
         
-        section h1.text-center {
+        .gradient-heading {
             font-size: 2.5rem !important;
         }
         
-        .bizkimiz h1:nth-child(2), .bizkimiz h1:nth-child(3) {
+        .subtitle-gradient, .subtitle-gradient-2 {
             font-size: 2rem !important;
+        }
+        
+        .card-body {
+            padding: 1.25rem !important;
+        }
+        
+        .card-image-container {
+            width: 70px;
+            height: 70px;
+            min-width: 70px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+        }
+        
+        .card-text {
+            font-size: 0.9rem;
         }
         
         footer .container {
             flex-direction: column;
             text-align: center;
             gap: 10px;
+        }
+        
+        /* Modal düzenlemeleri */
+        .modal-dialog {
+            margin: 0.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.4rem !important;
         }
     }
     
@@ -134,20 +258,24 @@ $contactUrl = $apply['contact_url'] ?? '#';
             font-size: 3rem !important;
         }
         
-        .bizkimiz h1.text-center {
+        .gradient-heading {
             font-size: 3rem !important;
         }
         
-        .bizkimiz h1:nth-child(2), .bizkimiz h1:nth-child(3) {
+        .subtitle-gradient, .subtitle-gradient-2 {
             font-size: 2.5rem !important;
+        }
+        
+        .card-flex-column {
+            flex-direction: column !important;
+        }
+        
+        .card-image-container {
+            margin-bottom: 1rem;
         }
         
         .egitimlerimiz .aciklama br {
             display: none; /* Mobil görünümde satır sonlarını kaldır */
-        }
-        
-        .card-body {
-            padding: 1.25rem !important;
         }
     }
     
@@ -221,6 +349,52 @@ $contactUrl = $apply['contact_url'] ?? '#';
         width: 100%;
         transition: all 0.3s ease;
     }
+
+    /* Scrollbar stil düzenlemeleri */
+    /* Webkit (Chrome, Safari, yeni Opera) için */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(253, 196, 0, 0.5);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(253, 196, 0, 0.8);
+    }
+
+    /* Modal kapatma butonu hover efekti */
+    .close-modal-btn:hover {
+        background-color: #ff9500 !important;
+        box-shadow: 0 0 15px rgba(253, 196, 0, 0.7) !important;
+        transform: translateY(-3px) !important;
+    }
+
+    /* Eğitim kartları geçiş efekti */
+    .training-card {
+        transition: all 0.3s ease !important;
+    }
+
+    /* Modal geçiş efekti */
+    .modal-content {
+        transition: all 0.3s ease;
+    }
+
+    .modal.fade .modal-dialog {
+        transition: transform 0.3s ease-out;
+        transform: scale(0.95);
+    }
+
+    .modal.show .modal-dialog {
+        transform: scale(1);
+    }
     </style>
 </head>
 <body>
@@ -275,10 +449,9 @@ $contactUrl = $apply['contact_url'] ?? '#';
         <section class="hero" id="hero-section">
             <div class="row gy-4">
                 <div class="col-md-6 col-sm-12 text-light d-flex flex-column align-items-center align-items-md-start">
-                    <p style="color: rgba(255,255,255,0.61)">İ s t a n b u l &nbsp T i c a r e t &nbsp Ü n i v e r s i t e s i</p>
-                    <h1 style="color: white; font-size: 4rem">IoT Zirvesi <br>ve Eğitimleri</h1>
-                    <p style="color: rgba(255,255,255,0.61)">Temel amacımız siber güvenlik alanında eğitimler, <br class="d-none d-md-inline"> seminerler ve tanıtım içerikleri üreterek bu alana ilgisi olan kişileri
-                        <br class="d-none d-md-inline"> geliştirmektir.</p>
+                    <p style="color: rgba(255,255,255,0.61)"><?php echo htmlspecialchars($heroTopTitle); ?></p>
+                    <h1 style="color: white; font-size: 4rem"><?php echo $heroMainTitle; ?></h1>
+                    <p style="color: rgba(255,255,255,0.61)"><?php echo $heroDescription; ?></p>
                     <button onclick="window.open('<?php echo htmlspecialchars($applyUrl); ?>', '_blank')" class="mt-3 mb-5 apply-button" style="background-color: #FDC400; border: none; border-radius: 50px; width: 120px; height: 35px; display: inline-block; text-align: center; line-height: 35px; text-decoration: none; color: #333; cursor: pointer; transition: all 0.3s ease;">Başvuru Yap</button>
                 </div>
                 <div class="text-center col-md-6 col-sm-12">
@@ -294,11 +467,7 @@ $contactUrl = $apply['contact_url'] ?? '#';
     <section class="bizkimiz" id="bizkimiz">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center" style="
-                font-size: 4rem;
-                background: linear-gradient(90deg, #ffffff, #000000);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($about['title']); ?></h1>
+                <h1 class="text-center gradient-heading"><?php echo htmlspecialchars($about['title']); ?></h1>
                 
                 <?php if (isset($about['subtitle']) && $about['subtitle'] !== '') { 
                     // Alt başlığı tamamen veritabanından yönetmek için
@@ -308,34 +477,14 @@ $contactUrl = $apply['contact_url'] ?? '#';
                         $part1 = $subtitleParts[0];
                         $part2 = $subtitleParts[1];
                 ?>
-                <h1 class="text-center" style="
-                font-size: 3rem;
-                background: linear-gradient(90deg, #ffdd03, #ff6c03);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($part1); ?></h1>
-                <h1 class="text-center" style="
-                font-size: 3rem;
-                background: linear-gradient(90deg, #ffdd03, #d54000);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($part2); ?></h1>
+                <h1 class="text-center subtitle-gradient"><?php echo htmlspecialchars($part1); ?></h1>
+                <h1 class="text-center subtitle-gradient-2"><?php echo htmlspecialchars($part2); ?></h1>
                 <?php } else { // Tire işareti yoksa tek satır göster ?>
-                <h1 class="text-center" style="
-                font-size: 3rem;
-                background: linear-gradient(90deg, #ffdd03, #d54000);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;"><?php echo htmlspecialchars($about['subtitle']); ?></h1>
+                <h1 class="text-center subtitle-gradient-2"><?php echo htmlspecialchars($about['subtitle']); ?></h1>
                 <?php } 
                 } else { // Subtitle boşsa varsayılan değerleri göster ?>
-                <h1 class="text-center" style="
-                font-size: 3rem;
-                background: linear-gradient(90deg, #ffdd03, #ff6c03);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;">İstanbul Ticaret Üniversitesi</h1>
-                <h1 class="text-center" style="
-                font-size: 3rem;
-                background: linear-gradient(90deg, #ffdd03, #d54000);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;">Siber Güvenlik Topluluğu</h1>
+                <h1 class="text-center subtitle-gradient">İstanbul Ticaret Üniversitesi</h1>
+                <h1 class="text-center subtitle-gradient-2">Siber Güvenlik Topluluğu</h1>
                 <?php } ?>
                 <p class="text-center px-3" style="color: rgba(255,255,255,0.61) ">
                     <?php echo nl2br(htmlspecialchars($about['content'])); ?>
@@ -344,12 +493,11 @@ $contactUrl = $apply['contact_url'] ?? '#';
         </div>
     </section>
 
-
     <!-- Eğitmenler Bölümü -->
     <section class="egitmenler" id="egitmenler">
         <div class="row mt-5">
             <div class="col-12">
-                <h1 class="text-center" style="font-size: 4rem; color: white;">Eğitmenlerimiz</h1>
+                <h1 class="text-center gradient-heading">Eğitmenlerimiz</h1>
             </div>
         </div>
         <div class="row mt-4">
@@ -374,31 +522,29 @@ $contactUrl = $apply['contact_url'] ?? '#';
                     }
                 ?>
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100" style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <div class="card h-100 instructor-card">
                         <div class="card-body d-flex flex-column" style="padding: 2rem;">
-                            <div class="d-flex align-items-center">
-                                <div class="me-4">
+                            <div class="d-flex align-items-center card-flex-column">
+                                <div class="me-4 card-image-container">
                                     <?php if (file_exists($photoPath)) { ?>
-                                        <div style="width: 90px; height: 90px;">
-                                            <img src="<?php echo htmlspecialchars($photoPath); ?>" class="rounded-circle" alt="Eğitmen <?php echo htmlspecialchars($row['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                                        </div>
+                                        <img src="<?php echo htmlspecialchars($photoPath); ?>" class="rounded-circle" alt="Eğitmen <?php echo htmlspecialchars($row['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
                                     <?php } else { ?>
-                                        <div style="width: 90px; height: 90px; background-color: #FDC400; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <div style="width: 100%; height: 100%; background-color: #FDC400; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-user" style="font-size: 35px; color: #333;"></i>
                                         </div>
                                     <?php } ?>
                                 </div>
                                 <div>
-                                    <h4 style="color: white; font-weight: 600; margin-bottom: 0; font-size: 1.4rem;"><?php echo htmlspecialchars($row['name']); ?></h4>
+                                    <h4 class="card-title"><?php echo htmlspecialchars($row['name']); ?></h4>
                                 </div>
                             </div>
                             <div class="mt-3 ps-2">
-                                <p style="color: rgba(255,255,255,0.9); margin-bottom: 0; font-size: 1rem; text-align: left;">
+                                <p class="card-text" style="margin-bottom: 0; text-align: left;">
                                     <span style="color: #FDC400; font-weight: 500;">Uzmanlık Alanı:</span>
                                     <?php echo htmlspecialchars($row['expertise']); ?>
                                 </p>
                             </div>
-                            <div class="mt-5">
+                            <div class="mt-auto mt-4">
                                 <button onclick="window.open('<?php echo htmlspecialchars($row['profile_url'] ?? '#'); ?>', '_blank')" class="btn w-100" style="background-color: #FDC400; color: #333; border-radius: 15px; padding: 12px 20px; font-weight: 500; font-size: 1rem; height: 48px; border: none; transition: all 0.3s ease;">Profili Görüntüle</button>
                             </div>
                         </div>
@@ -413,17 +559,10 @@ $contactUrl = $apply['contact_url'] ?? '#';
         </div>
     </section>
 
-
-
-
     <section class="egitimlerimiz" id="egitimlerimiz">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center baslik" style="
-                font-size: 4rem;
-                background: linear-gradient(90deg, #ffffff, #000000);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;">Eğitimlerimiz</h1>
+                <h1 class="text-center gradient-heading">Eğitimlerimiz</h1>
                 <p class="aciklama" style="text-align: center; color: rgba(255,255,255,0.61); padding: 0 15px;">
                     Siber güvenlik eğitimlerimiz, temel bilgilerden ileri seviye tekniklere kadar geniş bir <br class="d-none d-md-inline"> yelpazede, bireyleri ve kurumları dijital tehditlere karşı koruma becerileriyle donatmayı
                     <br class="d-none d-md-inline"> amaçlamaktadır.
@@ -453,26 +592,31 @@ $contactUrl = $apply['contact_url'] ?? '#';
                     }
                 ?>
                     <div class="col-md-4 mb-4">
-                        <div class="card h-100" style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                        <div class="card h-100 training-card" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#trainingModal-<?php echo $row['id']; ?>"
+                            data-training-id="<?php echo $row['id']; ?>"
+                            data-training-title="<?php echo htmlspecialchars($row['title']); ?>"
+                            data-training-description="<?php echo htmlspecialchars($row['description']); ?>"
+                            data-training-photo="<?php echo htmlspecialchars($photoPath); ?>"
+                            data-training-date="<?php echo date('d.m.Y', strtotime($row['date'])); ?>">
                             <div class="card-body d-flex flex-column" style="padding: 2rem;">
-                                <div class="d-flex align-items-center">
-                                    <div class="me-4">
+                                <div class="d-flex align-items-center card-flex-column">
+                                    <div class="me-4 card-image-container">
                                         <?php if (!empty($photoPath) && file_exists($photoPath)) { ?>
-                                            <div style="width: 90px; height: 90px;">
-                                                <img src="<?php echo htmlspecialchars($photoPath); ?>" class="rounded-circle" alt="<?php echo htmlspecialchars($row['title']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                                            </div>
+                                            <img src="<?php echo htmlspecialchars($photoPath); ?>" class="rounded-circle" alt="<?php echo htmlspecialchars($row['title']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
                                         <?php } else { ?>
-                                            <div style="width: 90px; height: 90px; background-color: #FDC400; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <div style="width: 100%; height: 100%; background-color: #FDC400; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                                 <i class="fas fa-laptop-code" style="font-size: 35px; color: #333;"></i>
                                             </div>
                                         <?php } ?>
                                     </div>
                                     <div style="display: flex; align-items: center; min-height: 90px;">
-                                        <h4 style="color: white; font-weight: 600; margin: 0; font-size: 1.4rem;"><?php echo htmlspecialchars($row['title']); ?></h4>
+                                        <h4 class="card-title"><?php echo htmlspecialchars($row['title']); ?></h4>
                                     </div>
                                 </div>
                                 <div style="margin-top: 1rem;">
-                                    <p style="color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.6;">
+                                    <p class="card-text">
                                         <?php 
                                         $description = htmlspecialchars($row['description']);
                                         echo (strlen($description) > 100) ? substr($description, 0, 100) . '...' : $description; 
@@ -497,6 +641,84 @@ $contactUrl = $apply['contact_url'] ?? '#';
        
     </section>
 </div>
+
+<!-- Eğitim Detayları için Modal Yapısı -->
+<?php
+// Modal'ları veritabanından tekrar çek
+$query = "SELECT * FROM trainings";
+$result = mysqli_query($conn, $query);
+
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Fotoğraf yolunu kontrol et
+        $photoPath = $row['photo'];
+        if (!empty($photoPath)) {
+            if (strpos($photoPath, 'admin/') === 0) {
+                $photoPath = $photoPath;
+            } else {
+                $photoPath = 'admin/' . $photoPath;
+            }
+        } else {
+            $photoPath = '';
+        }
+?>
+<!-- Eğitim Modal -->
+<div class="modal fade" id="trainingModal-<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="trainingModalLabel-<?php echo $row['id']; ?>" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="background: rgba(17, 17, 17, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); color: white;">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="trainingModalLabel-<?php echo $row['id']; ?>" style="color: #FDC400; font-weight: 600; font-size: 1.8rem; word-wrap: break-word; overflow-wrap: break-word;"><?php echo htmlspecialchars($row['title']); ?></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row">
+                    <div class="col-md-5 text-center mb-4 mb-md-0">
+                        <?php if (!empty($photoPath) && file_exists($photoPath)) { ?>
+                            <div class="modal-image-container" style="width: 100%; max-height: 250px; border-radius: 15px; border: 2px solid rgba(253, 196, 0, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.2);">
+                                <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" style="width: 100%; height: auto; max-height: 250px; object-fit: cover; display: block;">
+                            </div>
+                        <?php } else { ?>
+                            <div class="modal-image-container" style="width: 100%; height: 250px; background-color: rgba(253, 196, 0, 0.2); border-radius: 15px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(253, 196, 0, 0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                                <i class="fas fa-laptop-code" style="font-size: 80px; color: #FDC400;"></i>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <div class="col-md-7">
+                        <h4 style="color: white; font-weight: 500; margin-bottom: 15px; font-size: 1.4rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">Eğitim Detayları</h4>
+                        <div class="modal-description" style="max-height: 250px; overflow-y: auto; padding-right: 10px; scrollbar-width: thin; scrollbar-color: #FDC400 rgba(0,0,0,0.2);">
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.7; margin-bottom: 20px; text-align: justify; word-wrap: break-word; overflow-wrap: break-word;">
+                                <?php echo nl2br(htmlspecialchars($row['description'])); ?>
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center mb-3 mt-3">
+                            <i class="far fa-calendar-alt me-2" style="color: #FDC400;"></i>
+                            <span style="color: rgba(255,255,255,0.9);">Tarih: <?php echo date('d.m.Y', strtotime($row['date'])); ?></span>
+                        </div>
+                        <?php if (!empty($row['instructor_id'])) { 
+                            // Eğitmenin bilgilerini çek
+                            $instructor_query = "SELECT name, expertise FROM instructors WHERE id = " . (int)$row['instructor_id'];
+                            $instructor_result = mysqli_query($conn, $instructor_query);
+                            if ($instructor_result && mysqli_num_rows($instructor_result) > 0) {
+                                $instructor = mysqli_fetch_assoc($instructor_result);
+                        ?>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-tie me-2" style="color: #FDC400;"></i>
+                            <span style="color: rgba(255,255,255,0.9); word-wrap: break-word; overflow-wrap: break-word;">Eğitmen: <?php echo htmlspecialchars($instructor['name']); ?> - <?php echo htmlspecialchars($instructor['expertise']); ?></span>
+                        </div>
+                        <?php } } ?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn close-modal-btn" style="background-color: #FDC400; color: #333; border-radius: 50px; padding: 10px 25px; font-weight: 500; border: none; transition: all 0.3s ease;" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    }
+}
+?>
 
 <!-- Footer -->
 <footer>
@@ -542,6 +764,27 @@ $(document).ready(function() {
             $('.navbar-toggler').click();
         }
     });
+    
+    // Eğitim kartları için hover efekti
+    $('.training-card').hover(
+        function() {
+            $(this).css({
+                'transform': 'translateY(-5px)',
+                'box-shadow': '0 12px 40px rgba(0, 0, 0, 0.5), 0 0 15px rgba(253, 196, 0, 0.3)',
+                'border': '1px solid rgba(253, 196, 0, 0.2)'
+            });
+        },
+        function() {
+            $(this).css({
+                'transform': 'translateY(0)',
+                'box-shadow': '0 8px 32px rgba(0, 0, 0, 0.3)',
+                'border': '1px solid rgba(255, 255, 255, 0.05)'
+            });
+        }
+    );
+    
+    // Eğitim kartlarına tıklandığında modal açma (zaten data-bs-toggle ile çalışıyor)
+    $('.training-card').css('transition', 'all 0.3s ease');
 });
 </script>
 </body>
